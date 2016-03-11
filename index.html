@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <script src="script/jquery-2.2.1.min.js">
+    </script>
+    <script src="bootstrap/js/bootstrap.min.js">
+    </script>
+    <link href=
+    "https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css"
+    rel="stylesheet">
+    <script src=
+    "https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js">
+    </script>
+    <script src="script/script.js">
+    </script>
+    <style>
+            .bg{
+                background-color:darkgrey;
+            }
+            .br-top-20{
+                margin-top: 20px;
+            }
+            .br-5{
+                margin-bottom: 5px;
+            }
+            .br-10{
+                margin-bottom: 10px;
+            }
+            body{
+                background-color: #0e5a7f;
+            }
+    </style>
+    <title></title>
+</head>
+<body>
+    <div class="container br-top-20">
+        <div class="well">
+            <div class="row">
+                <div class="col-xs-12 col-lg-12 br-5 text-center">
+                    <h4>Stock market search</h4>
+                </div>
+                <form>
+                    <div class="form-group col-lg-3 br-10">
+                        <label for="exampleInputEmail1">Enter the stock name or
+                        symbol</label>
+                    </div>
+                    <div class="col-lg-6 br-10">
+                        <input class="form-control" id="exampleInputEmail1"
+                        placeholder="Email" type="email">
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <button class="btn btn-primary br-5" type=
+                        "button"><span class=
+                        "glyphicon glyphicon-search"></span> Get Quote</button>
+                        <button class="btn br-5" type="button"><span class=
+                        "glyphicon glyphicon-refresh"></span> Clear</button>
+                        <div class="form-group">
+                            Powered By: Market on Demand
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="well">
+            <div class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false" id=
+            "carousel-example-generic">
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" role="listbox">
+                    
+                    <div class="item active">
+                            <div class="panel panel-default">
+                                <!-- Default panel contents -->
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            Favorite List
+                                        </div>
+                                        <div class="col-md-offset-5 col-lg-4">
+                                            Automatic Refresh <input checked
+                                            data-toggle="toggle" type=
+                                            "checkbox">
+                                            <div class="btn btn-default">
+                                                <span class=
+                                                "glyphicon glyphicon-refresh"></span>
+                                            </div>
+                                            <div class="btn btn-default">
+                                                <a data-slide="next" href=
+                                                "#carousel-example-generic" role="button">
+                                                    <span aria-hidden=
+                                                "true" class="glyphicon glyphicon-chevron-right"></span>
+                                                </a>
+                                                                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Table -->
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Symbol</th>
+                                                <th>Company Name</th>
+                                                <th>Stock Price</th>
+                                                <th>Change (Change
+                                                Percent)</th>
+                                                <th>Market Cap</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">
+                                                    <a href="#">MSFT</a>
+                                                </th>
+                                                <td>Microsoft Corp</td>
+                                                <td>$ 52.03</td>
+                                                <td><span>-0.32</span>
+                                                <span>-0.62%</span> <img alt=
+                                                "arrow" src=""></td>
+                                                <td>411.52 Billion</td>
+                                                <td>
+                                                    <a class="btn btn-default"
+                                                    href="#"><span class=
+                                                    "glyphicon glyphicon-trash">
+                                                    </span></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">
+                                                    <a href="#">MSFT</a>
+                                                </th>
+                                                <td>Microsoft Corp</td>
+                                                <td>$ 52.03</td>
+                                                <td><span>-0.32</span>
+                                                <span>-0.62%</span> <img alt=
+                                                "arrow" src=""></td>
+                                                <td>411.52 Billion</td>
+                                                <td>
+                                                    <a class="btn btn-default"
+                                                    href="#"><span class=
+                                                    "glyphicon glyphicon-trash">
+                                                    </span></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">
+                                                    <a href="#">MSFT</a>
+                                                </th>
+                                                <td>Microsoft Corp</td>
+                                                <td>$ 52.03</td>
+                                                <td><span>-0.32</span>
+                                                <span>-0.62%</span> <img alt=
+                                                "arrow" src=""></td>
+                                                <td>411.52 Billion</td>
+                                                <td>
+                                                    <a class="btn btn-default"
+                                                    href="#"><span class=
+                                                    "glyphicon glyphicon-trash">
+                                                    </span></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="item">
+                       
+                            <div class="panel panel-default">
+                                <!-- Default panel contents -->
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            Favorite List
+                                        </div>
+                                        <div class="col-md-offset-5 col-lg-4">
+                                            Automatic Refresh <input checked
+                                            data-toggle="toggle" type=
+                                            "checkbox">
+                                            <div class="btn btn-default">
+                                                <span class=
+                                                "glyphicon glyphicon-refresh"></span>
+                                            </div>
+                                            <div class="btn btn-default">
+                                                <span class=
+                                                "glyphicon glyphicon-chevron-right">
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- Table -->
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Symbol</th>
+                                                <th>Company Name</th>
+                                                <th>Stock Price</th>
+                                                <th>Change (Change
+                                                Percent)</th>
+                                                <th>Market Cap</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">
+                                                    <a href="#">MSFT</a>
+                                                </th>
+                                                <td>Microsoft Corp</td>
+                                                <td>$ 52.03</td>
+                                                <td><span>-0.32</span>
+                                                <span>-0.62%</span> <img alt=
+                                                "arrow" src=""></td>
+                                                <td>411.52 Billion</td>
+                                                <td>
+                                                    <a class="btn btn-default"
+                                                    href="#"><span class=
+                                                    "glyphicon glyphicon-trash">
+                                                    </span></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">
+                                                    <a href="#">MSFT</a>
+                                                </th>
+                                                <td>Microsoft Corp</td>
+                                                <td>$ 52.03</td>
+                                                <td><span>-0.32</span>
+                                                <span>-0.62%</span> <img alt=
+                                                "arrow" src=""></td>
+                                                <td>411.52 Billion</td>
+                                                <td>
+                                                    <a class="btn btn-default"
+                                                    href="#"><span class=
+                                                    "glyphicon glyphicon-trash">
+                                                    </span></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">
+                                                    <a href="#">MSFT</a>
+                                                </th>
+                                                <td>Microsoft Corp</td>
+                                                <td>$ 52.03</td>
+                                                <td><span>-0.32</span>
+                                                <span>-0.62%</span> <img alt=
+                                                "arrow" src=""></td>
+                                                <td>411.52 Billion</td>
+                                                <td>
+                                                    <a class="btn btn-default"
+                                                    href="#"><span class=
+                                                    "glyphicon glyphicon-trash">
+                                                    </span></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                
+                
+                <!-- Controls -->
+                <a data-slide="prev" href=
+                "#carousel-example-generic" role="button">
+                    <span aria-hidden=
+                "true" class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="sr-only">Previous</span>
+                </a> 
+                <a data-slide="next" href=
+                "#carousel-example-generic" role="button">
+                    <span aria-hidden=
+                "true" class="glyphicon glyphicon-chevron-right"></span>
+                    
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
