@@ -1,12 +1,30 @@
-
+var URL="http://localhost/HW8/php/stocks.php";
 function getStockDataAsync(stock_symbol){
     return $.ajax({
         dataType: "json",
-        crossDomain:true,
-        url:"http://localhost/HW8/php/stocks.php",
+        //crossDomain:true,
+        url:URL,
         data: {'action': 'stockInfo','param':stock_symbol}
     });
 }
+
+//http://chart.finance.yahoo.com/t?s=M&lang=en-US&width=400&height=300
+function getStockChartAsync(stock_symbol){
+    return $.ajax({
+        dataType:"text",
+        url:URL,
+        data: {'action':'stockChart','param':stock_symbol}
+    });   
+}
+
+function getStockHistAsync(parameters){
+    return $.ajax({
+        dataType:"text",
+        url:URL,
+        data:{'action':'stockHistory','parameters':parameters}
+    });
+}
+
 
 function searchStockTable(stock_symbol){
     var htmlStr;
@@ -36,7 +54,52 @@ function searchStockTable(stock_symbol){
         htmlStr += ('<tr><th>Low Price</th><td>'+data.Low+'</td></tr>');
         //Oppening Price
         htmlStr += ('<tr><th>Oppening Price</th><td>'+data.Open+'</td></tr>');
+        $('#searchStockDetailsTable').append(htmlStr);
     });
-    $('#searchStockDetailsTable').append(htmlStr);
+    
 }
 
+function searchStockChart(stock_symbol){
+    var htmlStr;
+    var promise = getStockChartAsync(stock_symbol);
+    promise.success(function(data){
+        htmlStr = data;
+        $('#searchCharts').append(htmlStr);
+        $('#searchCharts img').addClass('img-responsive');
+    });
+}
+
+
+function setHistoricalChart(stock_symbol){
+    var htmlStr;
+    var params = getInputParams(stock_symbol,3);
+    var paramsJsonString = JSON.stringify(params);
+    var promise = getStockHistAsync(paramsJsonString);
+    promise.success(function(data){
+        htmlStr = data;
+        $('#historicalChart').append(htmlStr);
+    });
+}
+
+getInputParams = function(_symbol,_duration){
+    return {  
+        Normalized: false,
+        NumberOfDays: _duration,
+        DataPeriod: "Day",
+        Elements: [
+            {
+                Symbol: _symbol,
+                Type: "price",
+                Params: ["ohlc"] //ohlc, c = close only
+            },
+            {
+                Symbol: _symbol,
+                Type: "volume"
+            }
+        ]
+    }
+};
+
+searchStockTable("MSFT");
+searchStockChart("MSFT");
+setHistoricalChart("GOOG");
