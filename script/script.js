@@ -1,4 +1,6 @@
 var URL="http://localhost/HW8/php/stocks.php";
+
+//AJAX call functions
 function getStockDataAsync(stock_symbol){
     return $.ajax({
         dataType: "json",
@@ -14,7 +16,6 @@ function getStockChartAsync(stock_symbol){
         data: {'action':'stockChart','param':stock_symbol}
     });   
 }
-
 function getStockHistAsync(parameters){
     return $.ajax({
         dataType:"text",
@@ -23,7 +24,7 @@ function getStockHistAsync(parameters){
     });
 }
 
-
+//TAB - PILLS 
 function searchStockTable(stock_symbol){
     var htmlStr;
     var promise = getStockDataAsync(stock_symbol);
@@ -54,9 +55,7 @@ function searchStockTable(stock_symbol){
         htmlStr += ('<tr><th>Oppening Price</th><td>'+data.Open+'</td></tr>');
         $('#searchStockDetailsTable').append(htmlStr);
     });
-    
 }
-
 function searchStockChart(stock_symbol){
     var htmlStr;
     var promise = getStockChartAsync(stock_symbol);
@@ -66,9 +65,6 @@ function searchStockChart(stock_symbol){
         $('#searchCharts img').addClass('img-responsive');
     });
 }
-
-var g;
-
 function setHistoricalChart(stock_symbol){
     var htmlStr;
     var params = getInputParams(stock_symbol,2554);
@@ -83,6 +79,7 @@ function setHistoricalChart(stock_symbol){
     });
 }
 
+//Helper functions
 getInputParams = function(_symbol,_duration){
     return {  
         Normalized: false,
@@ -107,7 +104,6 @@ Markit_fixDate = function(dateIn) {
     var dat = new Date(dateIn);
     return Date.UTC(dat.getFullYear(), dat.getMonth(), dat.getDate());
 };
-
 Markit_getValue = function(json) {
     var dates = json.Dates || [];
     var elements = json.Elements || [];
@@ -129,25 +125,15 @@ Markit_getValue = function(json) {
     }
     return chartSeries;
 };
-
 Markit_render = function(data,stock_symbol) {
-    
     var values = Markit_getValue(data);
-    //volume = Markit_getVolume(data);  
-    //jsonDataV =volume;
-    //jsonData = ohlc;
-    
     $('#historicalChart').highcharts('StockChart', {
-
-
             rangeSelector : {
                 selected : 1
             },
-
             title : {
                 text : stock_symbol+' Stock Price'
             },
-
             series : [{
                 name : stock_symbol+' Stock Price',
                 data : values,

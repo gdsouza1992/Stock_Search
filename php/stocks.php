@@ -20,7 +20,7 @@
             if($data != null)
             {
                 //file exists at url
-                return "<img src='".$apiURL."' alt='Graph for stock - ".$stockName."' />"    ;
+                return "<img src='".$apiURL."' alt='Graph for stock - ".$stockName."' />";
                 
             }else{
                 return "No chart data fond for ".$stockName;

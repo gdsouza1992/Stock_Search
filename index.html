@@ -33,15 +33,15 @@
             body{
                 background-color: #0e5a7f;
             }
-        #logo{
-            width: 160px;
-        }
-        #fb-icon{
-            width: 34px;   
-        }
-        .required-feild{
-            color: red;
-        }
+            #logo{
+                width: 160px;
+            }
+            #fb-icon{
+                width: 34px;   
+            }
+            .required-feild{
+                color: red;
+            }
     </style>
     <title></title>
 </head>
@@ -215,11 +215,11 @@
                                                 "tabs" id="tabs">
                                                     <li class="active">
                                                         <a data-toggle="tab" href=
-                                                        "#stock"><span aria-hidden="true" class="glyphicon glyphicon-dashboard"></span> Current Stock</a>
+                                                        "#stockTab"><span aria-hidden="true" class="glyphicon glyphicon-dashboard"></span> Current Stock</a>
                                                     </li>
                                                     <li>
                                                         <a data-toggle="tab" href=
-                                                        "#historicalChart"><span aria-hidden="true" class="glyphicon glyphicon-stats"></span> Historical Charts</a>
+                                                        "#historicalChartTab"><span aria-hidden="true" class="glyphicon glyphicon-stats"></span> Historical Charts</a>
                                                     </li>
                                                     <li>
                                                         <a data-toggle="tab" href=
@@ -231,7 +231,7 @@
                                                 <div class="tab-content" id=
                                                 "my-tab-content">
                                                     <div class="tab-pane active" id=
-                                                    "stock">
+                                                    "stockTab">
                                                         <div class="row">
                                                         <div class="col-lg-6">
                                                             <table id="searchStockDetailsTable" class="table table-striped">
@@ -255,8 +255,11 @@
                                                         </div >    
                                                         </div>
                                                     </div>
-                                                    <div class="tab-pane" id="historicalChart">
-                                                        
+                                                    <div class="tab-pane" id="historicalChartTab">
+                                                        <div class="row">
+                                                            <div class="col-lg-9 center-text center-block" id="historicalChart">
+                                                            </div>
+                                                        </div>    
                                                     </div>
                                                     <div class="tab-pane" id="feed">
                                                         <div class="col-lg-12">
@@ -287,15 +290,6 @@
                 </div>
             </div>
         </div>
-                <!-- Controls -->
-                <!--<a data-slide="prev" href="#carousel-example-generic" role=
-                "button"><span aria-hidden="true" class=
-                "glyphicon glyphicon-chevron-left"></span> <span class=
-                "sr-only">Previous</span></a>
-                <a data-slide="next" href=
-                "#carousel-example-generic" role="button"><span aria-hidden=
-                "true" class="glyphicon glyphicon-chevron-right"></span></a>-->
-            </div>
-     
+    </div> 
 </body>
 </html>
