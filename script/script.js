@@ -1,4 +1,5 @@
 var URL="http://localhost/HW8/php/stocks.php";
+var temp;
 
 //AJAX call functions
 function getStockDataAsync(stock_symbol){
@@ -21,6 +22,13 @@ function getStockHistAsync(parameters){
         dataType:"text",
         url:URL,
         data:{'action':'stockHistory','parameters':parameters}
+    });
+}
+function getStockNewsAsync(stock_symbol){
+    return $.ajax({
+        dataType: "json",
+        url:URL,
+        data: {'action': 'stockNews','param':stock_symbol}
     });
 }
 
@@ -66,16 +74,33 @@ function searchStockChart(stock_symbol){
     });
 }
 function setHistoricalChart(stock_symbol){
-    var htmlStr;
     var params = getInputParams(stock_symbol,2554);
     var paramsJsonString = JSON.stringify(params);
     var promise = getStockHistAsync(paramsJsonString);
     promise.success(function(data){
         jsonData = JSON.parse(data);
-        var stock_symbol = jsonData.Elements[0].Symbol
-        //g= jsonData;
+        var stock_symbol = jsonData.Elements[0].Symbol;
         Markit_render(jsonData,stock_symbol);
-        //$('#historicalChart').append(htmlStr);
+    });
+}
+function setStockNews(stock_symbol){
+    var htmlStr='';
+    var promise = getStockNewsAsync(stock_symbol);
+    promise.success(function(data){
+        newsArray = data.responseData.results;
+        temp = newsArray;
+        for(i=0;i<newsArray.length;i++)
+            {
+                var publishedDate = newsArray[i].publishedDate.substr(0,newsArray[i].publishedDate.indexOf("-")-1);
+                htmlStr+="<div class='well'>";
+                htmlStr+="<a href='"+newsArray[i].unescapedUrl+"' target='_blank'>"+newsArray[i].title+"</a>";
+                htmlStr+="<p>"+newsArray[i].content+"</p>";
+                htmlStr+="<h5>Publisher: "+newsArray[i].publisher+"</h5>";
+                htmlStr+="<h5>Date: "+publishedDate+"</h5>";
+                htmlStr+="</div>";
+            }
+        
+        $('#newsFeedTab').append(htmlStr);
     });
 }
 
@@ -158,7 +183,8 @@ Markit_render = function(data,stock_symbol) {
         });    
 };
 
-var stock_symbol = "GOOG";
+var stock_symbol = "AAPL";
 searchStockTable(stock_symbol);
 searchStockChart(stock_symbol);
 setHistoricalChart(stock_symbol);
+setStockNews(stock_symbol);
