@@ -32,9 +32,63 @@ function removeFavorite(stock_symbol){
         favorites.splice(favorites.indexOf(stock_symbol),1);    
     }
     var updatedFavorites = favorites.toString().replace(/,/g, " ");
-    localStorage.setItem('favoriteStocks',updatedFavorites);
-    return getFavorites();
+    localStorage.setItem('favoriteStocks',updatedFavorites);    
+    if(getFavorites() == "")
+        {
+            localStorage.removeItem('favoriteStocks')   
+        }
+    //return getFavorites();
+    // setUpFavoriteTable();
 }
+function setUpFavoriteTable(){
+    var favorites = getFavorites();
+    var favoritesData = [];
+    var htmlStr;
+    $("#searchStockDataTable tbody").empty();
+    if(favorites != null)
+        {
+            favorites.forEach(function(data,index){
+                var promiseFav = getStockDataAsync(data);
+                promiseFav.success(function(data){
+                    //favoritesData.push(data);
+                    $("#searchStockDataTable tbody").append(fillFavoriteTable(data));
+                    bindDelete();
+                    //bindOpenCarousel();
+                });
+            });
+        }
+
+}
+function fillFavoriteTable(data){
+    var upArrow = "http://www.free-icons-download.net/images/up-arrow-icon-55727.png";
+    var htmlStr;
+    htmlStr = "<tr>";
+    htmlStr += "<td><a class='openCarousel'>"+data.Symbol+"</a></td>"
+    htmlStr += "<td>"+data.Name+"</td>"
+    htmlStr += "<td>"+data.LastPrice+"</td>"
+    htmlStr += "<td>"+roundTo2(data.Change)+" "+roundTo2(data.ChangePercent)+"<img src='"+upArrow+"' alt='arrow'/></td>"
+    htmlStr += "<td>"+data.MarketCap+"</td>"
+    htmlStr += "<td><div data-symbol='"+data.Symbol+"' class='delete-fav btn btn-default'><span class='glyphicon glyphicon-trash'></span></div></td>";
+    htmlStr += "</tr>";
+    return htmlStr;
+}
+function bindDelete(){
+    $(".delete-fav").unbind().click(function(){
+        var delete_stock = this.getAttribute('data-symbol')  
+        removeFavorite(delete_stock);
+        deleteRowAnimation(this); 
+    });
+}
+function autocompleteStringBuilder(querystring){
+    
+    var promise  =  getStockAutocompleteAsync(querystring);
+    return promise.success(function(data){
+        return data;
+    });
+    //return autocompleteData;
+    
+}
+
 
 //AJAX call functions
 function getStockDataAsync(stock_symbol){
@@ -64,6 +118,26 @@ function getStockNewsAsync(stock_symbol){
         dataType: "json",
         url:URL,
         data: {'action': 'stockNews','param':stock_symbol}
+    });
+}
+function getStockAutocompleteAsync(queryString){
+        $('#autocomplete').autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: "http://localhost/HW8/php/stocks.php",
+                dataType: 'json',
+                data: request,
+                success: function (data) {
+                    response(data.map(function (value) {
+                        return {
+                            'label':value.Symbol + ' - '+value.Name+' ( '+value.Exchange+' )',
+                            'value': value.Value
+                        };  
+                    }));
+                }   
+            }); 
+        },  
+        minLength: 1
     });
 }
 
@@ -123,7 +197,6 @@ function setStockNews(stock_symbol){
     var promise = getStockNewsAsync(stock_symbol);
     promise.success(function(data){
         newsArray = data.responseData.results;
-        temp = newsArray;
         for(i=0;i<newsArray.length;i++)
             {
                 var publishedDate = newsArray[i].publishedDate.substr(0,newsArray[i].publishedDate.indexOf("-")-1);
@@ -158,6 +231,37 @@ getInputParams = function(_symbol,_duration){
         ]
     }
 };
+bindCarouselOpen =  function(){
+    carouselOpen();
+}
+
+
+//MDN round
+roundTo2 = function(num) {    
+    return +(Math.round(num + "e+2")  + "e-2");
+}
+
+//Annimation
+//http://jsfiddle.net/stamminator/z2fwdLdu/1/
+deleteRowAnimation = function (cellButton) {
+    var row = $(cellButton).closest('tr')
+        .children('td')
+    	.css({ backgroundColor: "#0e5a7f", color: "white" });
+    setTimeout(function () {
+            $(row)
+            .animate({ paddingTop: 0, paddingBottom: 0 }, 700)
+            .wrapInner('<div />')
+            .children()
+            .slideUp(700, function() { $(this).closest('tr').remove(); });
+    	}, 500
+    );
+};
+carouselOpen = function(){
+$("#carousel-example-generic").click();
+$("html, body").delay(200).animate({scrollTop: $('#carousel-well').offset().top }, 1500);    
+} 
+
+
 
 //Markit API - Edited from Github
 Markit_fixDate = function(dateIn) {
@@ -218,12 +322,28 @@ Markit_render = function(data,stock_symbol) {
         });    
 };
 
-var stock_symbol = "AAPL";
-searchStockTable(stock_symbol);
-searchStockChart(stock_symbol);
-setHistoricalChart(stock_symbol);
-setStockNews(stock_symbol);
+
 
 //var testData = {0:'GOOG',1:'AAPL',2:'MSFT'};
 //var testDataString = JSON.stringify(testData);
 //localStorage.setItem('testObject',testDataString);
+
+$( document ).ready(function() {
+    var stock_symbol = "AAPL";
+    getStockAutocompleteAsync();
+    searchStockTable(stock_symbol);
+    searchStockChart(stock_symbol);
+    setHistoricalChart(stock_symbol);
+    setStockNews(stock_symbol);
+    setUpFavoriteTable();
+    
+    
+      
+});
+
+addFavorites("A");
+addFavorites("B");
+addFavorites("C");
+addFavorites("D");
+addFavorites("F");
+addFavorites("M");

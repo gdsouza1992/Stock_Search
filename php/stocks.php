@@ -40,6 +40,14 @@
         return $googlenews;
     }
 
+    function getLookUpData($query){
+        //if($query != null)
+        //{
+            $apiURL = "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input=".$query;
+            return file_get_contents($apiURL);
+        //}
+    }
+
     
     if(isset($_GET['action']) && $_GET['action'] == "stockInfo")
     {
@@ -59,8 +67,9 @@
     {
         echo getStockNews($_GET['param']);   
     }
-    
-    
-
+    if(isset($_GET['term']))
+    {
+        echo getLookUpData($_GET['term']);   
+    }
     
 ?>

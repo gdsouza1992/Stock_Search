@@ -7,16 +7,19 @@
     </script>
     <script src="bootstrap/js/bootstrap.min.js">
     </script>
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
     <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
     <link href=
     "https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css"
     rel="stylesheet">
+    <link href=
+    "style/jquery-ui.css"
+    rel="stylesheet">
     <script src=
     "https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js">
     </script>
-    <script src="script/script.js">
-    </script>
+    
     <style>
             .bg{
                 
@@ -42,6 +45,9 @@
             .required-feild{
                 color: red;
             }
+            .yellow{
+                color: yellow;
+            }
     </style>
     <title></title>
 </head>
@@ -49,19 +55,19 @@
     <div class="container br-top-20">
         
 <!--    TOP SEARCH WELL-->
-        <div class="well">
+        <div class="well" id="search-well">
             <div class="row">
                 <div class="col-xs-12 col-lg-12 br-5 text-center">
                     <h4>Stock market search</h4>
                 </div>
                 <form>
                     <div class="form-group col-lg-3 br-10">
-                        <label for="exampleInputEmail1">Enter the stock name or
+                        <label for="autocomplete">Enter the stock name or
                         symbol<span class="required-feild">*</span></label>
                     </div>
                     <div class="col-lg-6 br-10">
-                        <input class="form-control" id="exampleInputEmail1"
-                        placeholder="Email" type="email">
+                        <input class="form-control" id="autocomplete"
+                        placeholder="Email">
                     </div>
                     <div class="form-group col-lg-3">
                         <button class="btn btn-primary br-5" type=
@@ -82,7 +88,7 @@
         </div>
         
 <!--    CAROUSEL-->
-        <div class="well">
+        <div class="well" id="carousel-well">
             <div class="carousel slide" data-interval="false" data-ride=
             "carousel" data-wrap="false" id="carousel-example-generic">
                 <!-- Wrapper for slides -->
@@ -132,54 +138,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <th scope="row">
-                                                        <a href="#">MSFT</a>
-                                                    </th>
-                                                    <td>Microsoft Corp</td>
-                                                    <td>$ 52.03</td>
-                                                    <td><span>-0.32</span>
-                                                    <span>-0.62%</span> <img alt=
-                                                    "arrow" src=""></td>
-                                                    <td>411.52 Billion</td>
-                                                    <td>
-                                                        <a class="btn btn-default"
-                                                        href="#"><span class=
-                                                        "glyphicon glyphicon-trash"></span></a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">
-                                                        <a href="#">MSFT</a>
-                                                    </th>
-                                                    <td>Microsoft Corp</td>
-                                                    <td>$ 52.03</td>
-                                                    <td><span>-0.32</span>
-                                                    <span>-0.62%</span> <img alt=
-                                                    "arrow" src=""></td>
-                                                    <td>411.52 Billion</td>
-                                                    <td>
-                                                        <a class="btn btn-default"
-                                                        href="#"><span class=
-                                                        "glyphicon glyphicon-trash"></span></a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">
-                                                        <a href="#">MSFT</a>
-                                                    </th>
-                                                    <td>Microsoft Corp</td>
-                                                    <td>$ 52.03</td>
-                                                    <td><span>-0.32</span>
-                                                    <span>-0.62%</span> <img alt=
-                                                    "arrow" src=""></td>
-                                                    <td>411.52 Billion</td>
-                                                    <td>
-                                                        <a class="btn btn-default"
-                                                        href="#"><span class=
-                                                        "glyphicon glyphicon-trash"></span></a>
-                                                    </td>
-                                                </tr>
+                                                
                                             </tbody>
                                         </table>
                                     </div>
@@ -223,7 +182,7 @@
                                                     </li>
                                                     <li>
                                                         <a data-toggle="tab" href=
-                                                        "#feed"><span aria-hidden="true" class="glyphicon glyphicon-link"></span> News Feeds</a>
+                                                        "#newsFeedTab"><span aria-hidden="true" class="glyphicon glyphicon-link"></span> News Feeds</a>
                                                     </li>
                                                 </ul>
                                                 <hr/>
@@ -242,8 +201,8 @@
                                                             <div class="row">
                                                                 <div class="col-lg-3 col-lg-offset-9">
                                                                     <img id="fb-icon" src="https://www.facebookbrand.com/img/fb-art.jpg" />
-                                                                    <div class="btn btn-default">
-                                                                        <span aria-hidden="true" class="glyphicon glyphicon-star"></span> 
+                                                                    <div id="fav-star" class="btn btn-default">
+                                                                        <span aria-hidden="true" class=" glyphicon glyphicon-star"></span> 
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -261,25 +220,8 @@
                                                             </div>
                                                         </div>    
                                                     </div>
-                                                    <div class="tab-pane" id="feed">
-                                                        <div class="col-lg-12">
-                                                            <div class="well">
-                                                                <a href="#"> The link of the name of the article </a>
-                                                                <p>
-                                                                    Some description about the article in short and other random text that seems to be usefull in this assignment which is the next great beacuse I dont know what im typing all im doing is filling text without lorem ipsum.
-                                                                </p>
-                                                                <h5>Publisher : The daily published</h5>
-                                                                <h5>Date 04 Mar 2016 09:25:07</h5>
-                                                            </div>
-                                                            <div class="well">
-                                                                <a href="#"> The link of the name of the article </a>
-                                                                <p>
-                                                                    Some description about the article in short and other random text that seems to be usefull in this assignment which is the next great beacuse I dont know what im typing all im doing is filling text without lorem ipsum.
-                                                                </p>
-                                                                <h5>Publisher : The daily published</h5>
-                                                                <h5>Date 04 Mar 2016 09:25:07</h5>
-                                                            </div>
-                                                        </div>
+                                                    <div class="tab-pane" id="newsFeedTab">
+                                                            
                                                     </div>
                                                 </div>
                                             </div>
@@ -291,5 +233,8 @@
             </div>
         </div>
     </div> 
+    
+<script src="script/script.js">
+    </script>    
 </body>
 </html>
