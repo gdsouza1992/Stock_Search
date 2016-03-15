@@ -1,6 +1,41 @@
 var URL="http://localhost/HW8/php/stocks.php";
 var temp;
 
+//In-App Functionality
+
+//Favorites
+function addFavorites(stock_symbol){
+    //Check if already present
+    var prefav = getFavorites();
+    if(prefav != undefined && prefav.indexOf(stock_symbol) != -1)
+    {
+        return "Item already present";
+    }
+    var favorites = localStorage.getItem('favoriteStocks');
+    if(favorites == null){
+        favorites = stock_symbol;
+    }
+    else{
+        favorites+=(" "+stock_symbol);
+    }
+    localStorage.setItem('favoriteStocks',favorites);   
+    return getFavorites();
+}
+function getFavorites(){
+    var favorites = localStorage.getItem('favoriteStocks');
+    if(favorites != null)
+    return favorites.split(" ");
+}
+function removeFavorite(stock_symbol){
+    var favorites = getFavorites(); 
+    if(favorites.indexOf(stock_symbol) != -1){
+        favorites.splice(favorites.indexOf(stock_symbol),1);    
+    }
+    var updatedFavorites = favorites.toString().replace(/,/g, " ");
+    localStorage.setItem('favoriteStocks',updatedFavorites);
+    return getFavorites();
+}
+
 //AJAX call functions
 function getStockDataAsync(stock_symbol){
     return $.ajax({
@@ -188,3 +223,7 @@ searchStockTable(stock_symbol);
 searchStockChart(stock_symbol);
 setHistoricalChart(stock_symbol);
 setStockNews(stock_symbol);
+
+//var testData = {0:'GOOG',1:'AAPL',2:'MSFT'};
+//var testDataString = JSON.stringify(testData);
+//localStorage.setItem('testObject',testDataString);
