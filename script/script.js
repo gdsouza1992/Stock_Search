@@ -1,4 +1,5 @@
 var URL="http://localhost/HW8/php/stocks.php";
+var upArrow = "http://www.free-icons-download.net/images/up-arrow-icon-55727.png";
 var temp;
 
 //In-App Functionality
@@ -60,13 +61,13 @@ function setUpFavoriteTable(){
 
 }
 function fillFavoriteTable(data){
-    var upArrow = "http://www.free-icons-download.net/images/up-arrow-icon-55727.png";
+   
     var htmlStr;
-    htmlStr = "<tr>";
+    htmlStr = "<tr id='sym-"+data.Symbol+"'class='fav-row'>";
     htmlStr += "<td><a class='openCarousel'>"+data.Symbol+"</a></td>"
     htmlStr += "<td>"+data.Name+"</td>"
-    htmlStr += "<td>"+data.LastPrice+"</td>"
-    htmlStr += "<td>"+roundTo2(data.Change)+" "+roundTo2(data.ChangePercent)+"<img src='"+upArrow+"' alt='arrow'/></td>"
+    htmlStr += "<td id='lastprice'>"+data.LastPrice+"</td>"
+    htmlStr += "<td id='change'>"+roundTo2(data.Change)+" "+roundTo2(data.ChangePercent)+"<img src='"+upArrow+"' alt='arrow'/></td>"
     htmlStr += "<td>"+data.MarketCap+"</td>"
     htmlStr += "<td><div data-symbol='"+data.Symbol+"' class='delete-fav btn btn-default'><span class='glyphicon glyphicon-trash'></span></div></td>";
     htmlStr += "</tr>";
@@ -79,15 +80,22 @@ function bindDelete(){
         deleteRowAnimation(this); 
     });
 }
-function autocompleteStringBuilder(querystring){
-    
-    var promise  =  getStockAutocompleteAsync(querystring);
-    return promise.success(function(data){
-        return data;
-    });
-    //return autocompleteData;
-    
+function updateFavouriteDetails(){
+        var rows = $('.fav-row');
+        for(i=0;i<rows.length;i++){
+    //    var thisStockRow = {'index':i,'stockVal':$('.fav-row a')[i].innerHTML};    
+        var thisStockRow = $('.fav-row a')[i].innerHTML;    
+        var promise = getStockDataAsync(thisStockRow);
+        promise.success(function(data){
+            var stockName = data.Symbol;
+            $("#sym-"+stockName).children()[2].innerHTML=data.LastPrice;
+            $("#sym-"+stockName).children()[3].innerHTML=roundTo2(data.Change)+" "+roundTo2(data.ChangePercent)+"<img src='"+upArrow+"' alt='arrow'/>";
+            console.log(data.LastPrice);
+        });
+    }
 }
+
+
 
 
 //AJAX call functions
@@ -140,6 +148,7 @@ function getStockAutocompleteAsync(queryString){
         minLength: 1
     });
 }
+
 
 //TAB - PILLS 
 function searchStockTable(stock_symbol){
@@ -341,9 +350,7 @@ $( document ).ready(function() {
       
 });
 
-addFavorites("A");
-addFavorites("B");
-addFavorites("C");
-addFavorites("D");
-addFavorites("F");
-addFavorites("M");
+
+addFavorites("BAC");
+addFavorites("PFE");
+addFavorites("FCX");
