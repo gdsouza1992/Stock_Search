@@ -46,6 +46,7 @@ function setUpFavoriteTable(){
     var favoritesData = [];
     var htmlStr;
     $("#searchStockDataTable tbody").empty();
+    bindrefreshClick();
     if(favorites != null)
         {
             favorites.forEach(function(data,index){
@@ -94,9 +95,11 @@ function updateFavouriteDetails(){
         });
     }
 }
-
-
-
+function bindrefreshClick(){
+    $("#refresh-now").click(function(){
+        updateFavouriteDetails();
+    });
+}
 
 //AJAX call functions
 function getStockDataAsync(stock_symbol){
@@ -148,7 +151,6 @@ function getStockAutocompleteAsync(queryString){
         minLength: 1
     });
 }
-
 
 //TAB - PILLS 
 function searchStockTable(stock_symbol){
@@ -266,8 +268,8 @@ deleteRowAnimation = function (cellButton) {
     );
 };
 carouselOpen = function(){
-$("#carousel-example-generic").click();
-$("html, body").delay(200).animate({scrollTop: $('#carousel-well').offset().top }, 1500);    
+    $("#carousel-example-generic").click();
+    $("html, body").delay(200).animate({scrollTop: $('#carousel-well').offset().top }, 1500);    
 } 
 
 
@@ -351,6 +353,3 @@ $( document ).ready(function() {
 });
 
 
-addFavorites("BAC");
-addFavorites("PFE");
-addFavorites("FCX");
