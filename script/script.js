@@ -1,11 +1,11 @@
-var URL="http://localhost/HW8/php/stocks.php";
+var URL="./php/stocks.php";
 var upArrow = "http://www.free-icons-download.net/images/up-arrow-icon-55727.png";
 var currentStock;
 var temp;
 
 //In-App Functionality
 
-//Favorites
+//Favorite Table Functions
 function addFavorites(stock_symbol){
     //Check if already present
     var prefav = getFavorites();
@@ -107,6 +107,42 @@ function clearNextDetails(){
     $("#searchCharts").empty();
     $("#newsFeedTab").empty();
 }
+function bindFavoriteClick(){
+    $("#fav-star").click(function(){
+        if($(this).hasClass("yellow-star")){
+            removeFavorite(currentStock);
+            $(this).removeClass("yellow-star");   
+        }else{
+            addFavorites(currentStock);
+            $(this).addClass("yellow-star");   
+        }
+        setUpFavoriteTable();
+    });
+}
+function bindStockFavClick(){
+    $(".openCarousel").unbind().click(function(){
+        var stockAnchor = $(this);
+        var stockName = stockAnchor[0].innerHTML;
+        currentStock = stockName;
+        setUpNextDetails(currentStock);
+        
+        $('#carousel-example-generic').carousel('next');
+    });
+}
+function setFavStar(stock_symbol){
+    var favorites = getFavorites();
+    if(favorites == undefined){
+        return;
+    }else{
+        if(favorites.indexOf(stock_symbol) != -1){
+            $("#fav-star").addClass("yellow-star");
+        }else{
+            $("#fav-star").removeClass("yellow-star");
+        }    
+    }
+}
+
+//Get Quote Functions
 function bindGetQuote(){
     $("#getQuote").click(function(){ 
         var textVal = $("#autocomplete").val();
@@ -144,41 +180,6 @@ function setUpNextDetails(stock_symbol){
     setStockNews(stock_symbol);
     setFavStar(stock_symbol)
 }
-function bindFavoriteClick(){
-    $("#fav-star").click(function(){
-        if($(this).hasClass("yellow-star")){
-            removeFavorite(currentStock);
-            $(this).removeClass("yellow-star");   
-        }else{
-            addFavorites(currentStock);
-            $(this).addClass("yellow-star");   
-        }
-        setUpFavoriteTable();
-    });
-}
-function bindStockFavClick(){
-    $(".openCarousel").unbind().click(function(){
-        var stockAnchor = $(this);
-        var stockName = stockAnchor[0].innerHTML;
-        currentStock = stockName;
-        setUpNextDetails(currentStock);
-        
-        $('#carousel-example-generic').carousel('next');
-    });
-}
-function setFavStar(stock_symbol){
-    var favorites = getFavorites();
-    if(favorites == undefined){
-        return;
-    }else{
-        if(favorites.indexOf(stock_symbol) != -1){
-            $("#fav-star").addClass("yellow-star");
-        }else{
-            $("#fav-star").removeClass("yellow-star");
-        }    
-    }
-}
-
 
 //AJAX call functions
 function getStockDataAsync(stock_symbol){
@@ -214,7 +215,7 @@ function getStockAutocompleteAsync(queryString){
     $('#autocomplete').autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: "http://localhost/HW8/php/stocks.php",
+                url: URL,
                 dataType: 'json',
                 data: request,
                 success: function (data) {
@@ -303,7 +304,7 @@ function setStockNews(stock_symbol){
         }
         else if(data.responseStatus == 503){
             htmlStr+="<div class='well'>";
-            htmlStr+="<p> Error Code:"+data.responseStatus+" Details:"+data.responseDetails+"</p>";
+            htmlStr+="<p><b>Error Code:</b> "+data.responseStatus+"<br/><b>Details:</b> "+data.responseDetails+"<br/> Too many request were done to this API.</p>";
              htmlStr+="</div>";
         }
         $('#newsFeedTab').append(htmlStr);
@@ -389,9 +390,38 @@ Markit_getValue = function(json) {
 };
 Markit_render = function(data,stock_symbol) {
     var values = Markit_getValue(data);
+    //	1	week,	1	month,	3	months,	6	months,	1	year,	YTD	and	All.
     $('#historicalChart').highcharts('StockChart', {
             rangeSelector : {
-                selected : 1
+                buttons : [{
+                    type : 'day',
+                    count : 7,
+                    text : '1w'
+                }, {
+                    type : 'month',
+                    count : 1,
+                    text : '1m'
+                },{
+                    type : 'month',
+                    count : 3,
+                    text : '3m'
+                },{
+                    type : 'month',
+                    count : 6,
+                    text : '6m'
+                },{
+                    type : 'year',
+                    count : 1,
+                    text : '1y'
+                },{
+                    type: 'ytd',
+	                text: 'YTD'
+                },{
+                    type : 'all',
+                    text : 'All'
+                }],
+                selected : 0,
+                inputEnabled : false
             },
             title : {
                 text : stock_symbol+' Stock Price'

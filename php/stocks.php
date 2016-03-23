@@ -30,7 +30,7 @@
 
     function getStockNews($stockName){
         $serverIP = $_SERVER['SERVER_ADDR'];
-        $googlenews= file_get_contents("https://ajax.googleapis.com/ajax/services/search/news?v=1.0&q=".$stockName."&userip="."192.168.0.1");
+        $googlenews= file_get_contents("https://ajax.googleapis.com/ajax/services/search/news?v=1.0&q=".$stockName."&userip=".$serverIP);
         return $googlenews;
     }
 
