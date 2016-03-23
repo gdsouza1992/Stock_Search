@@ -1,13 +1,7 @@
 <?php
     function getStockInfo($stockName){
-        if($stockName == null)
-        {
-            $apiURL = 'http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol=AAPL';
-            return file_get_contents($apiURL);    
-        }else{
             $apiURL = 'http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol='.$stockName;
             return file_get_contents($apiURL);       
-        }
     }
 
     function getStockChartImage($stockName){
@@ -36,7 +30,7 @@
 
     function getStockNews($stockName){
         $serverIP = $_SERVER['SERVER_ADDR'];
-        $googlenews= file_get_contents("https://ajax.googleapis.com/ajax/services/search/news?v=1.0&q=".$stockName."&userip=".$serverIP);
+        $googlenews= file_get_contents("https://ajax.googleapis.com/ajax/services/search/news?v=1.0&q=".$stockName."&userip="."192.168.0.1");
         return $googlenews;
     }
 

@@ -23,6 +23,9 @@
             .required-feild{
                 color: red;
             }
-            .yellow{
+            .yellow-star{
                 color: yellow;
+            }
+            .openCarousel{
+                cursor: pointer;
             }

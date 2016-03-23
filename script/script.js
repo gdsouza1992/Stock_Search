@@ -1,5 +1,6 @@
 var URL="http://localhost/HW8/php/stocks.php";
 var upArrow = "http://www.free-icons-download.net/images/up-arrow-icon-55727.png";
+var currentStock;
 var temp;
 
 //In-App Functionality
@@ -55,6 +56,7 @@ function setUpFavoriteTable(){
                     //favoritesData.push(data);
                     $("#searchStockDataTable tbody").append(fillFavoriteTable(data));
                     bindDelete();
+                    bindStockFavClick();
                     //bindOpenCarousel();
                 });
             });
@@ -62,7 +64,6 @@ function setUpFavoriteTable(){
 
 }
 function fillFavoriteTable(data){
-   
     var htmlStr;
     htmlStr = "<tr id='sym-"+data.Symbol+"'class='fav-row'>";
     htmlStr += "<td><a class='openCarousel'>"+data.Symbol+"</a></td>"
@@ -100,6 +101,84 @@ function bindrefreshClick(){
         updateFavouriteDetails();
     });
 }
+function clearNextDetails(){
+    $("#searchStockDetailsTable").empty();    
+    $("#searchCharts").empty();
+    $("#searchCharts").empty();
+    $("#newsFeedTab").empty();
+}
+function bindGetQuote(){
+    $("#getQuote").click(function(){ 
+        var textVal = $("#autocomplete").val();
+        var stockName = textVal.substr(0,textVal.indexOf(" "));
+        var reg =/([A-Z])+( )+(-)+( )+(.*)*\w+( )+\( +[A-Z a-z 0-9]*\w+( )\)/g
+        if(textVal.match(reg))
+            {
+                currentStock = stockName;
+                clearNextDetails();
+                setUpNextDetails(stockName);
+                $("#nextCarousel").attr("href","#carousel-example-generic");
+                $("#nextCarousel .btn").removeClass("disabled"); 
+                $('#carousel-example-generic').carousel('next');
+                
+            }
+        else{
+            
+            $("#validation-msg").removeClass("hidden");
+        }
+        
+    });
+}
+function bindClearQuote(){
+    $("#clearQuote").click(function(){
+        $("#autocomplete").val("");
+        $("#nextCarousel .btn").addClass("disabled");
+        $("#nextCarousel").removeAttr("href");
+    });
+}
+function setUpNextDetails(stock_symbol){
+    clearNextDetails();
+    searchStockTable(stock_symbol);
+    searchStockChart(stock_symbol);
+    setHistoricalChart(stock_symbol);
+    setStockNews(stock_symbol);
+    setFavStar(stock_symbol)
+}
+function bindFavoriteClick(){
+    $("#fav-star").click(function(){
+        if($(this).hasClass("yellow-star")){
+            removeFavorite(currentStock);
+            $(this).removeClass("yellow-star");   
+        }else{
+            addFavorites(currentStock);
+            $(this).addClass("yellow-star");   
+        }
+        setUpFavoriteTable();
+    });
+}
+function bindStockFavClick(){
+    $(".openCarousel").unbind().click(function(){
+        var stockAnchor = $(this);
+        var stockName = stockAnchor[0].innerHTML;
+        currentStock = stockName;
+        setUpNextDetails(currentStock);
+        
+        $('#carousel-example-generic').carousel('next');
+    });
+}
+function setFavStar(stock_symbol){
+    var favorites = getFavorites();
+    if(favorites == undefined){
+        return;
+    }else{
+        if(favorites.indexOf(stock_symbol) != -1){
+            $("#fav-star").addClass("yellow-star");
+        }else{
+            $("#fav-star").removeClass("yellow-star");
+        }    
+    }
+}
+
 
 //AJAX call functions
 function getStockDataAsync(stock_symbol){
@@ -132,13 +211,14 @@ function getStockNewsAsync(stock_symbol){
     });
 }
 function getStockAutocompleteAsync(queryString){
-        $('#autocomplete').autocomplete({
+    $('#autocomplete').autocomplete({
         source: function (request, response) {
             $.ajax({
                 url: "http://localhost/HW8/php/stocks.php",
                 dataType: 'json',
                 data: request,
                 success: function (data) {
+                    $("#validation-msg").addClass("hidden");
                     response(data.map(function (value) {
                         return {
                             'label':value.Symbol + ' - '+value.Name+' ( '+value.Exchange+' )',
@@ -207,8 +287,10 @@ function setStockNews(stock_symbol){
     var htmlStr='';
     var promise = getStockNewsAsync(stock_symbol);
     promise.success(function(data){
-        newsArray = data.responseData.results;
-        for(i=0;i<newsArray.length;i++)
+        if(data.responseStatus == 200){
+            htmlStr='';
+            newsArray = data.responseData.results;
+            for(i=0;i<newsArray.length;i++)
             {
                 var publishedDate = newsArray[i].publishedDate.substr(0,newsArray[i].publishedDate.indexOf("-")-1);
                 htmlStr+="<div class='well'>";
@@ -218,7 +300,12 @@ function setStockNews(stock_symbol){
                 htmlStr+="<h5>Date: "+publishedDate+"</h5>";
                 htmlStr+="</div>";
             }
-        
+        }
+        else if(data.responseStatus == 503){
+            htmlStr+="<div class='well'>";
+            htmlStr+="<p> Error Code:"+data.responseStatus+" Details:"+data.responseDetails+"</p>";
+             htmlStr+="</div>";
+        }
         $('#newsFeedTab').append(htmlStr);
     });
 }
@@ -269,7 +356,7 @@ deleteRowAnimation = function (cellButton) {
 };
 carouselOpen = function(){
     $("#carousel-example-generic").click();
-    $("html, body").delay(200).animate({scrollTop: $('#carousel-well').offset().top }, 1500);    
+    //$("html, body").delay(200).animate({scrollTop: $('#carousel-well').offset().top }, 1500);    
 } 
 
 
@@ -340,13 +427,12 @@ Markit_render = function(data,stock_symbol) {
 //localStorage.setItem('testObject',testDataString);
 
 $( document ).ready(function() {
-    var stock_symbol = "AAPL";
+    //var stock_symbol = "AAPL";
     getStockAutocompleteAsync();
-    searchStockTable(stock_symbol);
-    searchStockChart(stock_symbol);
-    setHistoricalChart(stock_symbol);
-    setStockNews(stock_symbol);
     setUpFavoriteTable();
+    bindGetQuote();
+    bindClearQuote();
+    bindFavoriteClick();
     
     
       
