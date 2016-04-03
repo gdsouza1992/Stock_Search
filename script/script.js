@@ -141,6 +141,9 @@ function setFavStar(stock_symbol){
         }    
     }
 }
+function bindFaceBook(){
+    
+}
 
 //Get Quote Functions
 function bindGetQuote(){
@@ -288,23 +291,23 @@ function setStockNews(stock_symbol){
     var htmlStr='';
     var promise = getStockNewsAsync(stock_symbol);
     promise.success(function(data){
-        if(data.responseStatus == 200){
+        if(data.d.results.length >= 1){
             htmlStr='';
-            newsArray = data.responseData.results;
+            newsArray = data.d.results;
             for(i=0;i<newsArray.length;i++)
             {
-                var publishedDate = newsArray[i].publishedDate.substr(0,newsArray[i].publishedDate.indexOf("-")-1);
+                //var publishedDate = newsArray[i].publishedDate.substr(0,newsArray[i].publishedDate.indexOf("-")-1);
                 htmlStr+="<div class='well'>";
-                htmlStr+="<a href='"+newsArray[i].unescapedUrl+"' target='_blank'>"+newsArray[i].title+"</a>";
-                htmlStr+="<p>"+newsArray[i].content+"</p>";
-                htmlStr+="<h5>Publisher: "+newsArray[i].publisher+"</h5>";
-                htmlStr+="<h5>Date: "+publishedDate+"</h5>";
+                htmlStr+="<a href='"+newsArray[i].Url+"' target='_blank'>"+newsArray[i].Title+"</a>";
+                htmlStr+="<p>"+newsArray[i].Description+"</p>";
+                htmlStr+="<h5>Publisher: "+newsArray[i].Source+"</h5>";
+                htmlStr+="<h5>Date: "+newsArray[i].Date+"</h5>";
                 htmlStr+="</div>";
             }
         }
-        else if(data.responseStatus == 503){
+        else if(data.d.results.length < 1){
             htmlStr+="<div class='well'>";
-            htmlStr+="<p><b>Error Code:</b> "+data.responseStatus+"<br/><b>Details:</b> "+data.responseDetails+"<br/> Too many request were done to this API.</p>";
+            htmlStr+="<p>No data available</p>";
              htmlStr+="</div>";
         }
         $('#newsFeedTab').append(htmlStr);
@@ -450,7 +453,26 @@ Markit_render = function(data,stock_symbol) {
         });    
 };
 
-
+function shareOnFacebook(){
+    alert(currentStock);
+    var imageStr =$("#searchCharts img").attr("src");
+    imgScaled = imageStr.replace("500",200);
+    imgScaled = imgScaled.replace("400",200);
+    
+    
+    FB.ui({
+        method: 'share',
+        title: "Current Stock Price of company name is amount",
+        href: "http://dev.markitondemand.com/",
+        caption: "obalFacebookShareObject.caption",
+        picture: imgScaled,
+        description: "globalFacebookShareObject.description"
+        
+    }, function(response) {
+        if(response && response.post_id){}
+        else{}
+    });
+} 
 
 //var testData = {0:'GOOG',1:'AAPL',2:'MSFT'};
 //var testDataString = JSON.stringify(testData);
@@ -463,9 +485,10 @@ $( document ).ready(function() {
     bindGetQuote();
     bindClearQuote();
     bindFavoriteClick();
+    bindFaceBook();
+    
     
     
       
 });
-
 

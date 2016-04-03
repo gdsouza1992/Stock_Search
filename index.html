@@ -2,6 +2,8 @@
 <html>
 <head>
     <meta content="width=device-width, initial-scale=1" name="viewport">
+    
+    
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
     </script>
@@ -27,6 +29,26 @@
     <title>Stock Search - Gareth</title>
 </head>
 <body>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1013765568691639',
+      xfbml      : true,
+      version    : 'v2.5'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script> 
+    
+    
+    
     <div class="container br-top-20">
         
 <!--    TOP SEARCH WELL-->
@@ -175,7 +197,7 @@
                                                         <div class="col-lg-6">
                                                             <div class="row">
                                                                 <div class="col-lg-3 col-lg-offset-9">
-                                                                    <img id="fb-icon" src="https://www.facebookbrand.com/img/fb-art.jpg" />
+                                                                   <img onclick='shareOnFacebook()' id="fb-icon" src="https://www.facebookbrand.com/img/fb-art.jpg" />
                                                                     <div id="fav-star" class="btn btn-default">
                                                                         <span aria-hidden="true" class=" glyphicon glyphicon-star"></span> 
                                                                     </div>
@@ -208,8 +230,15 @@
             </div>
         </div>
     </div> 
-    
+
 <script src="script/script.js">
-    </script>    
+</script>  
+
+
+
+
+    
+    
+<!--<div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-type="box_count"></div>-->
 </body>
 </html>

@@ -1,4 +1,5 @@
 <?php
+    //header('Content-Type: application/json');
     function getStockInfo($stockName){
             $apiURL = 'http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol='.$stockName;
             return file_get_contents($apiURL);       
@@ -29,9 +30,23 @@
     }
 
     function getStockNews($stockName){
-        $serverIP = $_SERVER['SERVER_ADDR'];
-        $googlenews= file_get_contents("https://ajax.googleapis.com/ajax/services/search/news?v=1.0&q=".$stockName."&userip=".$serverIP);
-        return $googlenews;
+                    // Replace this value with your account key
+                    $accountKey = 'jRt+7TEPhFER8jJN61YIpHDdnKq1gfEtHC39mO9HpN4';
+            
+                    $request =  'https://api.datamarket.azure.com/Bing/Search/v1/News?Query=%27'.$stockName.'%27&$format=json';
+                    
+                    $context = stream_context_create(array(
+                        'http' => array(
+                            'request_fulluri' => true,
+                            'header'  => "Authorization: Basic " . base64_encode($accountKey . ":" . $accountKey)
+                        )
+                    ));
+                    
+                    $response = file_get_contents($request, 0, $context);
+                    
+                    //$jsonobj = json_decode($response);
+                    return $response;
+                    
     }
 
     function getLookUpData($query){
@@ -59,7 +74,7 @@
     }
     if(isset($_GET['action']) && $_GET['action'] == "stockNews")
     {
-        echo getStockNews($_GET['param']);   
+        //echo getStockNews($_GET['param']);   
     }
     if(isset($_GET['term']))
     {
