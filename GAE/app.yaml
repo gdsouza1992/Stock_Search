@@ -1,0 +1,27 @@
+application: csci571ss
+version: 1
+runtime: php55
+api_version: 1
+threadsafe: yes
+
+handlers:
+
+- url: /style/
+  static_dir: style
+
+- url: /bootstrap/
+  static_dir: bootstrap
+
+- url: /Images/
+  static_dir: Images
+
+- url: /script/
+  static_dir: script
+
+- url: /php/
+  static_dir: php
+
+- url: /.*
+  static_files: index.html
+  upload: index\.html
+
