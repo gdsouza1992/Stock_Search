@@ -2,30 +2,12 @@
     //header('Content-Type: application/json');
     function getStockInfo($stockName){
             $apiURL = 'http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol='.$stockName;
-            return file_get_contents($apiURL);       
-    }
-
-    function getStockChartImage($stockName){
-        if($stockName == null)
-        {
-            return "No chart data fond for ".$stockName;
-        }else{
-            $apiURL = 'http://chart.finance.yahoo.com/t?s='.$stockName.'&lang=en-US&width=500&height=400';
-            $data = file_get_contents($apiURL);
-            if($data != null)
-            {
-                //file exists at url
-                return "<img src='".$apiURL."' alt='Graph for stock - ".$stockName."' />";
-                
-            }else{
-                return "No chart data fond for ".$stockName;
-            }
-        }
+            return @file_get_contents($apiURL);       
     }
 
     function getStockHistoricalData($params){
         $apiURL ="http://dev.markitondemand.com/MODApis/Api/v2/InteractiveChart/json?parameters=".$params;
-        $fileresponse = file_get_contents($apiURL);
+        $fileresponse = @file_get_contents($apiURL);
         return $fileresponse;
     }
 
@@ -33,7 +15,7 @@
                     // Replace this value with your account key
                     $accountKey = 'jRt+7TEPhFER8jJN61YIpHDdnKq1gfEtHC39mO9HpN4';
             
-                    $request =  'https://api.datamarket.azure.com/Bing/Search/v1/News?Query=%27'.$stockName.'%27&$format=json';
+                    $request = "https://api.datamarket.azure.com/Bing/Search/v1/News?Query=%27".$stockName."%27&Options=%27EnableHighlighting%27&\$format=json";
                     
                     $context = stream_context_create(array(
                         'http' => array(
@@ -42,10 +24,10 @@
                         )
                     ));
                     
-                    $response = file_get_contents($request, 0, $context);
+                    $response = @file_get_contents($request, 0, $context);
                     
                     //$jsonobj = json_decode($response);
-                    return $response;
+                    echo $response;
                     
     }
 
@@ -53,7 +35,7 @@
         //if($query != null)
         //{
             $apiURL = "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input=".$query;
-            return file_get_contents($apiURL);
+            return @file_get_contents($apiURL);
         //}
     }
 
@@ -61,10 +43,6 @@
     if(isset($_GET['action']) && $_GET['action'] == "stockInfo")
     {
         echo getStockInfo($_GET['param']);
-    }
-    if(isset($_GET['action']) && $_GET['action'] == "stockChart")
-    {
-        echo getStockChartImage($_GET['param']);
     }
     if(isset($_GET['action']) && $_GET['action'] == "stockHistory")
     {
@@ -74,11 +52,11 @@
     }
     if(isset($_GET['action']) && $_GET['action'] == "stockNews")
     {
-        //echo getStockNews($_GET['param']);   
+        echo getStockNews($_GET['param']);   
     }
-    if(isset($_GET['term']))
+    if(isset($_GET['action']) && $_GET['action'] == "lookup")
     {
-        echo getLookUpData($_GET['term']);   
+        echo getLookUpData($_GET['param']);   
     }
     
 ?>
