@@ -13,7 +13,7 @@
 
     function getStockNews($stockName){
                     // Replace this value with your account key
-                    $accountKey = 'jRt+7TEPhFER8jJN61YIpHDdnKq1gfEtHC39mO9HpN4';
+                    $accountKey = 'YOUR ACCOUNT KEY GOES HERE';
             
                     $request = "https://api.datamarket.azure.com/Bing/Search/v1/News?Query=%27".$stockName."%27&Options=%27EnableHighlighting%27&\$format=json";
                     
