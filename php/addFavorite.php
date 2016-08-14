@@ -7,7 +7,7 @@ $success =false;
 
 $data_back = json_decode(file_get_contents('php://input'));
 $emailId = $data_back->{"emailId"};
-$newFavoriteCode = $data_back->{"favoriteCode"};
+$newFavoriteCode = $data_back->{"favouriteCode"};
 $token = $data_back->{"token"};
 
 

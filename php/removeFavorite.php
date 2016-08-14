@@ -7,33 +7,21 @@ $success =false;
 
 $data_back = json_decode(file_get_contents('php://input'));
 $emailId = $data_back->{"emailId"};
-$newFavoriteCode = $data_back->{"favoriteCode"};
+$removeFavoriteCode = $data_back->{"favouriteCode"};
 $token = $data_back->{"token"};
 
 
-$sql = "SELECT Favorites.favoriteValue FROM Favorites WHERE userID = (SELECT Users.userID FROM Users WHERE Users.emailID = '{$emailId}') AND Favorites.favoriteValue = '{$newFavoriteCode}'";
+$sql = "DELETE FROM Favorites WHERE Favorites.favoriteValue='{$removeFavoriteCode}' AND Favorites.userID = (SELECT Users.userID FROM Users WHERE Users.emailID = '{$emailId}');";
 
 $result = mysqli_query($conn,$sql);
-//Check if favorite is already in the list
-if($result->num_rows == 1){
-    while($row = $result->fetch_assoc()) {
-        //Compare new and existing values
-        if($row['favoriteValue'] == $newFavoriteCode){
-            $success = false;
-        }
-    }
-}else{
-    $sql2 = "INSERT INTO `Favorites`(`userID`, `favoriteValue`) VALUES ((SELECT Users.userID FROM Users WHERE Users.emailID = '{$emailId}'),'{$newFavoriteCode}')";
-    $result = mysqli_query($conn,$sql2);
-    if(mysqli_affected_rows($conn) > 0){
-        $success = true;
-    }
+if(mysqli_affected_rows($conn) > 0){
+    $success = true;
 }
 
 if($success){
    $json = json_encode(array(
      "response" => array(
-        "responseText" => 'Favorite added.',
+        "responseText" => 'Favorite removed.',
         "responseStatus" => 'SUCCESS',
         "authenticated" => 1,
         "token" => $token
@@ -43,7 +31,7 @@ if($success){
 }else{
     $json = json_encode(array(
      "response" => array(
-        "responseText" => 'Favorite not added.',
+        "responseText" => 'Favorite not removed.',
         "responseStatus" => 'FAILURE',
         "authenticated" => 0,
         "token" => $token

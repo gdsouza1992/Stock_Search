@@ -14,8 +14,26 @@ $emailId = $data_back->{"emailId"};
 $password = $data_back->{"password"};
 $token = $data_back->{"token"};
 
+
+//Facebook signup
+if($emailId != '' && $username != '' && $password == ''){
     
-$sql = "SELECT userID FROM Users WHERE emailID = '{$emailId}'";
+    $sql = "SELECT userID FROM Users WHERE emailID = '{$emailId}'";
+        //echo $sql;
+
+    $hasUser = $conn->query($sql);
+    //echo $hasUser->num_rows;
+
+    if($hasUser->num_rows == 0){
+        $sql = "CALL CreateNewUser('{$username}','','{$emailId}','FACEBOOK')";
+        $result = $conn->query($sql);
+        $success = true;    
+    }else{
+        $success = false;
+    }
+}
+else{
+    $sql = "SELECT userID FROM Users WHERE emailID = '{$emailId}'";
 //echo $sql;
 
 $hasUser = $conn->query($sql);
@@ -40,10 +58,13 @@ if($hasUser->num_rows == 0){
 //    echo $confirmationLink;
     $result = $conn->query($sql);
     include('mail.php');
+    $success = true;
 }
 else{
     $success = false;
 }
+}
+
 
 
 if($success){

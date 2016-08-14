@@ -10,7 +10,7 @@ if ( isset($_SERVER['QUERY_STRING'])) {
     $userFound = $conn->query($sql);
     if($userFound->num_rows > 0){
         while($row = $userFound->fetch_assoc()) {
-            $sql = "UPDATE Users SET secureSignup='SECURED' WHERE userID='{$row['userID']}'";
+            $sql = "UPDATE Users SET secureSignup='SECURED',TrialStartDate = CURDATE(),TrialDateEnd = (CURDATE() + INTERVAL 10 DAY) WHERE userID='{$row['userID']}'";
             $result = $conn->query($sql);
             echo "USER Validated";
         }
