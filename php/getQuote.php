@@ -10,6 +10,21 @@ $token = $data_back->{"token"};
 
 $quoteURL = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22{$stockCode}%22)&format=json&env=http://datatables.org/alltables.env";
 
+$sql = "SELECT Sector,Industry FROM Stocks WHERE stockCode = '{$stockCode}'";
+$result = mysqli_query($conn,$sql);
+if($result->num_rows == 1){
+    while($row = $result->fetch_assoc()) {
+        $_Sector = $row['Sector'];
+        $_Industry = $row['Industry'];
+    }
+}else{
+        $_Sector = '';
+        $_Industry = '';
+}
+
+
+
+
 $stockData = json_decode(file_get_contents($quoteURL));
 $query = $stockData->{"query"};
 $quote = $query->{"results"}->{"quote"};
@@ -46,7 +61,9 @@ if($_Name != null || $_Name != ''){
     'Change_YTD_Percent'=>$_Change_YTD_Percent,
     'High_Price'=>$_High_Price,
     'Low_Price'=>$_Low_Price,
-    'Open_Price'=>$_Open_Price
+    'Open_Price'=>$_Open_Price,
+    'Sector'=>$_Sector,
+    'Industry'=>$_Industry    
     );
         
     $success = true;

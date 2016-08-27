@@ -6,7 +6,7 @@ include('DBcredentials.php');
 $success =false;
 
 $endDate = date("Y-m-d");
-$starttime = strtotime("-1 year", time());
+$starttime = strtotime("-6 month", time());
 $startDate = date("Y-m-d", $starttime);
 
  
@@ -56,6 +56,13 @@ while($row = $result->fetch_assoc()) {
         $_High_Price = $quote->{"DaysHigh"};
         $_Low_Price = $quote->{"DaysLow"};
         $_Oppening_Price = $quote->{"Open"};
+        
+        if($Change == ''){
+            $_Low_Price = $histDataValues[0]->{"Low"};
+            $_High_Price = $histDataValues[0]->{"High"};
+            $_Low_Price_test = $histDataValues[0]->{"Low"};
+            $_Low_Price_test = $histDataValues[0]->{"Low"};
+        }
 
 
         $stockDataObj = array(
@@ -83,6 +90,7 @@ while($row = $result->fetch_assoc()) {
 
 if($success){
    $json = json_encode(array(
+     "Low" => $_Low_Price_test,
      "response" => array(
         "responseText" => 'Favorites found.',
         "responseStatus" => 'SUCCESS',
