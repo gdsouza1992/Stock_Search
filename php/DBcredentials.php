@@ -1,8 +1,8 @@
 <?php
-    $servername = "phpmyadminloop.ccsg3joxgbt7.us-west-1.rds.amazonaws.com";
-    $username = "gdsouzaloop";
-    $password = "gdsouzaloop";
-    $dbname = "StockSearchDB";
+    $servername = "";
+    $username = "";
+    $password = "";
+    $dbname = "";
     
     // Create connection
     $conn = new mysqli($servername, $username, $password, $dbname);
